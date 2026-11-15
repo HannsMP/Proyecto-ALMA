@@ -10,7 +10,7 @@ import {
   Minimize2,
   Mic,
 } from 'lucide-react';
-import { ROLE_PRESENTATIONS, type PresentationSlide } from '../data/presentationsData';
+import { ROLE_PRESENTATIONS, SLIDE_KIND_LABELS } from '../data/presentationsData';
 import type { TeamMember } from '../data/teamMembers';
 
 interface PresentacionViewProps {
@@ -19,17 +19,6 @@ interface PresentacionViewProps {
   onExportPpt: () => Promise<void>;
   exportingPpt: boolean;
 }
-
-const SLIDE_KIND_LABELS: Record<PresentationSlide['kind'], string> = {
-  cover: 'Portada y Gancho Clínico',
-  problem: 'Diagnóstico y Empatía (DT)',
-  architecture: 'Arquitectura Mecatrónica ALMA',
-  scamper: 'Innovación SCAMPER Medida',
-  roleFocus: 'Profundización de Rol',
-  finance: 'Modelo de Negocio y Finanzas',
-  impact: 'Impacto Social y ODS',
-  closing: 'Cierre y Piloto Clínico',
-};
 
 export function PresentacionView({
   activeMemberId,

@@ -34,6 +34,17 @@ export interface RolePresentationDeck {
   slides: PresentationSlide[];
 }
 
+export const SLIDE_KIND_LABELS: Record<SlideVisualKind, string> = {
+  cover: 'Portada y Gancho Clínico',
+  problem: 'Diagnóstico y Empatía (DT)',
+  architecture: 'Arquitectura Mecatrónica ALMA',
+  scamper: 'Innovación SCAMPER Medida',
+  roleFocus: 'Profundización de Rol',
+  finance: 'Modelo de Negocio y Finanzas',
+  impact: 'Impacto Social y ODS',
+  closing: 'Cierre y Piloto Clínico',
+};
+
 export const ROLE_PRESENTATIONS: RolePresentationDeck[] = [
   // =========================================================================
   // 1. GABRIEL A. CADENILLAS ALFARO (Coordinador · DT & SCAMPER)
@@ -63,7 +74,7 @@ export const ROLE_PRESENTATIONS: RolePresentationDeck[] = [
         ],
         deliveryCue: 'Mirar fijo a cámara, tono cercano y pausado en la pregunta inicial. Mostrar el prototipo físico brevemente si se graba en vivo.',
         speechScript:
-          'Imaginen sobrevivir a un accidente cerebrovascular y escuchar que recuperarán la movilidad de su brazo, pero solo si asisten tres veces por semana a rehabilitación durante meses. En el Perú, más del sesenta y cinco por ciento de pacientes abandona o no accede a esa continuidad por falta de cupos hospitalarios y altos costos de traslado. Soy Gabriel Cadenillas, coordinador del proyecto ALMA en la UPN, y hoy les presento cómo convertimos nuestro exoesqueleto robótico controlado por voz en una solución viable y respaldada por evidencia científica.',
+          'Imaginen sobrevivir a un ACV y saber que recuperarán movilidad solo asistiendo 3 veces por semana a terapia durante meses. En el Perú, > 65 % abandona por falta de cupos y traslados mayores a S/ 135 semanales. Soy Gabriel Cadenillas, coordinador de ALMA en la UPN, y hoy les presento nuestro exoesqueleto robótico por voz, viable y validado científicamente.',
       },
       {
         id: 'g-2',
@@ -85,7 +96,7 @@ export const ROLE_PRESENTATIONS: RolePresentationDeck[] = [
         ],
         deliveryCue: 'Señalar las barras comparativas de la matriz de decisión.',
         speechScript:
-          'Al aplicar las cinco fases de Design Thinking entrevistamos a cuatro pacientes post-ACV y dos fisioterapeutas en Lima Norte. Descubrimos dos barreras concretas: primero, los pacientes rechazan los electrodos mioeléctricos porque requieren calibración precisa y fallan cuando el músculo está atrofiado; segundo, operar una pantalla pequeña con una sola mano resulta frustrante. Por eso definimos nuestro reto: crear un dispositivo domiciliario operable totalmente por voz natural, seguro y por debajo de mil doscientos soles.',
+          'Con Design Thinking entrevistamos a 4 pacientes post-ACV y 2 fisioterapeutas en Lima Norte. Detectamos 2 barreras concretas: los electrodos sEMG fallan por atrofia muscular y sudor, y operar una pantalla con 1 mano frustra al usuario. Por eso definimos nuestro reto: terapia domiciliaria segura por voz natural bajo S/ 1 200.',
       },
       {
         id: 'g-3',
@@ -107,7 +118,7 @@ export const ROLE_PRESENTATIONS: RolePresentationDeck[] = [
         ],
         deliveryCue: 'Mostrar el diagrama de bloques o el prototipo funcionando en flexión de 0° a 90°.',
         speechScript:
-          'Nuestra solución integra cuatro subsistemas mecatrónicos. En la parte mecánica, modelamos veintiséis piezas en Autodesk Inventor impresas en filamento PLA ligero, con rango físico y lógico limitado a noventa grados. En electrónica, un ESP32 controla un servomotor de cuarenta kilogramos por centímetro, un buzzer preventivo y una celda de carga HX711, protegidos con aislamiento galvánico mediante regulador XL4015. Y en software, la app ALMA interpreta comandos de voz localmente sin requerir internet permanente.',
+          'Nuestra arquitectura acopla 4 subsistemas. En mecánica, 26 piezas en PLA impresas en 3D con tope de 0° a 90°. En electrónica, un ESP32 controla el servomotor de 40 kg·cm, buzzer preventivo y celda HX711, aislados mediante regulador XL4015. En software, la app ALMA procesa voz local en español peruano sin depender de internet.',
       },
       {
         id: 'g-4',
@@ -129,7 +140,7 @@ export const ROLE_PRESENTATIONS: RolePresentationDeck[] = [
         ],
         deliveryCue: 'Enfatizar el salto de 350 ms a menos de 20 ms ante una palabra de dolor.',
         speechScript:
-          'Con SCAMPER transformamos el prototipo en cuatro frentes cuantificados. Sustituimos sensores sEMG costosos por procesamiento de voz local con noventa y uno coma siete por ciento de precisión. Combinamos control motor y registro clínico offline en la misma plataforma. Modificamos la etapa de potencia separando la alimentación del servo mediante XL4015, logrando cero caídas BLE durante dos horas cuarenta y cinco de autonomía. Y eliminamos la dependencia de la nube, bajando la latencia de parada de emergencia a menos de veinte milisegundos cuando el paciente dice "me duele".',
+          'Con SCAMPER optimizamos 4 frentes medidos. Sustituimos sEMG por Edge NLP con 91,7 % de precisión en 8 intenciones. Combinamos PWM y registro clínico offline. Modificamos la potencia con XL4015 logrando 2,75 h de autonomía sin caídas BLE y un BOM de S/ 420. Eliminamos la nube, bajando la parada ante dolor a < 20 ms.',
       },
       {
         id: 'g-5',
@@ -151,7 +162,7 @@ export const ROLE_PRESENTATIONS: RolePresentationDeck[] = [
         referenceTags: ['G01 Karasheva 2025', 'G02 Shafaie 2026', 'P31 Guo 2022', 'R33 Page 2021'],
         deliveryCue: 'Señalar el flujo ordenado de evidencias E00–E03 hacia el artículo.',
         speechScript:
-          'Como coordinador aseguré que cada mejora física de ALMA tuviera respaldo en la literatura y trazabilidad en Drive. Tomando como plantilla estructural las revisiones de Karasheva y Shafaie, aplicamos PRISMA 2020 sobre ochocientos veinte registros de Scopus, Web of Science y ScienceDirect, realizando cribado ciego por pares hasta consolidar treinta y un estudios primarios verificados, cien por ciento publicados entre dos mil veintidós y dos mil veintiséis.',
+          'Como coordinador aseguré trazabilidad integral desde Design Thinking hasta las evidencias E00–E21 en Drive. Siguiendo las revisiones guía de Karasheva (2025) y Shafaie (2026), aplicamos PRISMA 2020 sobre 820 registros de Scopus, WoS y ScienceDirect, cribando por pares hasta consolidar 31 estudios primarios (100 % entre 2022 y 2026).',
       },
       {
         id: 'g-6',
@@ -173,7 +184,7 @@ export const ROLE_PRESENTATIONS: RolePresentationDeck[] = [
         referenceTags: ['P08 Kansal 2023', 'R02 Triwiyanto 2025', 'R27 Syukriyah 2026'],
         deliveryCue: 'Mostrar los 4 indicadores financieros y la barra de sensibilidad −20 %.',
         speechScript:
-          'En términos de negocio, fabricar un exoesqueleto ALMA cuesta cuatrocientos veinte soles frente a más de mil quinientos dólares de alternativas importadas, equiparando referentes de bajo costo como Kansal dos mil veintitrés. Con una inversión inicial de veinticuatro mil soles y un modelo mixto de venta a clínicas a mil ciento cincuenta soles y alquiler domiciliario a ciento cuarenta soles mensuales, obtenemos un VAN de nueve mil quinientos ochenta y nueve soles, una TIR de veinticinco coma dieciséis por ciento, beneficio-costo de uno coma cuarenta y recuperación en tres coma sesenta y nueve años, resistiendo incluso caídas de veinte por ciento.',
+          'En negocio, fabricar ALMA cuesta S/ 420 frente a > US$ 1 500 de equipos importados, en línea con Kansal (2023). Con S/ 24 000 de inversión, venta a clínicas en S/ 1 150 y alquiler domiciliario a S/ 140/mes, obtenemos a 5 años (COK 12 %) un VAN de S/ 9 589,89, TIR de 25,16 %, B/C de 1,40 y PRI de 3,69 años, viable aun cayendo −20 %.',
       },
       {
         id: 'g-7',
@@ -195,7 +206,7 @@ export const ROLE_PRESENTATIONS: RolePresentationDeck[] = [
         referenceTags: ['P14 Zheng 2025', 'P19 Gonçalves 2026', 'R30 Candio 2022', 'R32 Feigin 2024'],
         deliveryCue: 'Conectar el ahorro económico de la familia con la recuperación funcional.',
         speechScript:
-          'La revisión sistemática confirma que la telerehabilitación domiciliaria iguala la eficacia clínica presencial solo cuando el hardware es asequible y motivador. Con ALMA reducimos en más del ochenta y cinco por ciento la barrera de acceso económico, impactando directamente en el ODS tres de salud y bienestar, el ODS nueve de innovación local y el ODS diez al llevar terapia robótica a distritos sin infraestructura hospitalaria.',
+          'Nuestra revisión sistemática confirma que la telerehabilitación domiciliaria iguala la eficacia clínica cuando el hardware es asequible y seguro. ALMA reduce en > 85 % la barrera de acceso económico, impactando en el ODS 3 de salud, el ODS 9 de manufactura aditiva local y el ODS 10 de inclusión en distritos periféricos.',
       },
       {
         id: 'g-8',
@@ -216,7 +227,7 @@ export const ROLE_PRESENTATIONS: RolePresentationDeck[] = [
         ],
         deliveryCue: 'Sonreír, agradecer con seguridad y mantener contacto visual al cerrar.',
         speechScript:
-          'ALMA ya funciona hoy en banco de pruebas con control por voz, aislamiento eléctrico y tablero clínico en tiempo real. Nuestro siguiente paso es desplegar un piloto clínico con diez unidades y veinte pacientes junto a centros de fisioterapia aliados en Lima Norte. Invitamos a clínicas e inversionistas de impacto a sumarse para transformar la rehabilitación post-ACV en un derecho accesible en cada hogar. Muchas gracias.',
+          'ALMA ya opera en banco de pruebas con control por voz, aislamiento eléctrico y tablero clínico en tiempo real. Invitamos a centros de fisioterapia e inversionistas de impacto a cofinanciar el piloto de 10 unidades para 20 pacientes en Lima Norte. Todas las evidencias están auditables en Drive. Muchas gracias.',
       },
     ],
   },
@@ -249,7 +260,7 @@ export const ROLE_PRESENTATIONS: RolePresentationDeck[] = [
         ],
         deliveryCue: 'Iniciar con ritmo firme resaltando la cifra de 20 milisegundos.',
         speechScript:
-          'Cuando un paciente en rehabilitación dice "me duele, detente", el exoesqueleto no puede esperar medio segundo ni perder conexión inalámbrica por interferencia del motor. Ese desafío de seguridad fue nuestro punto de partida. Soy Arthuro Herrada, encargado de la metodología PRISMA 2020 y del sistema electrónico de ALMA, y en tres minutos les mostraré cómo la evidencia científica respalda nuestra arquitectura segura y rentable.',
+          'Cuando un paciente dice "me duele, detente", el exoesqueleto no puede demorar 500 ms ni perder Bluetooth por ruido del motor. Ese reto de seguridad fue nuestro punto de partida. Soy Arthuro Herrada, encargado del protocolo PRISMA 2020 y firmware ESP32 en ALMA, y les mostraré nuestra arquitectura segura y rentable.',
       },
       {
         id: 'a-2',
@@ -270,7 +281,7 @@ export const ROLE_PRESENTATIONS: RolePresentationDeck[] = [
         ],
         deliveryCue: 'Explicar brevemente por qué el paciente requiere manos libres.',
         speechScript:
-          'A través de Design Thinking entrevistamos a cuatro pacientes y dos fisioterapeutas. Confirmamos que el sesenta y cinco por ciento de afectados queda sin continuidad terapéutica por barreras de traslado, y que las órtesis basadas en señales musculares EMG fallan cuando existe atrofia severa o sudor. Además, los especialistas enfatizaron que cualquier equipo domiciliario debe limitar físicamente la flexión a noventa grados y responder al instante ante el dolor.',
+          'En Design Thinking entrevistamos a 4 pacientes y 2 fisioterapeutas. Confirmamos que el 65 % queda sin terapia continua por costos de traslado, y que los electrodos EMG fallan con atrofia muscular o sudor. Además, los especialistas exigieron tope mecánico a 90° y parada inmediata ante dolor.',
       },
       {
         id: 'a-3',
@@ -292,7 +303,7 @@ export const ROLE_PRESENTATIONS: RolePresentationDeck[] = [
         ],
         deliveryCue: 'Señalar el bloque de aislamiento de potencia en la lámina.',
         speechScript:
-          'Para resolver esto diseñamos una arquitectura mecatrónica de cuatro capas. En la etapa electrónica, el ESP32 opera el servomotor de cuarenta kilogramos por centímetro en el pin trece y un buzzer en el pin doce, pero separamos la alimentación mediante un convertidor step-down XL4015. Así eliminamos la fuerza contraelectromotriz que antes tumbaba el Bluetooth, logrando dos coma setenta y cinco horas de autonomía con cero desconexiones y latencia menor a veinte milisegundos.',
+          'Diseñamos 4 capas mecatrónicas. El ESP32 gobierna el servo de 40 kg·cm en GPIO 13 y el buzzer en GPIO 12, aislando los 11,1 V de potencia respecto al riel lógico de 5 V con un regulador XL4015. Así eliminamos el ruido inductivo, alcanzando 2,75 h de autonomía y latencia BLE < 20 ms.',
       },
       {
         id: 'a-4',
@@ -313,7 +324,7 @@ export const ROLE_PRESENTATIONS: RolePresentationDeck[] = [
         ],
         deliveryCue: 'Contrastar el costo de S/ 420 frente al comercial.',
         speechScript:
-          'Aplicamos SCAMPER con indicadores medibles: sustituimos los sensores EMG por un modelo NLP en el borde con noventa y uno coma siete por ciento de precisión; combinamos control PWM, buzzer de alerta y registro offline; modificamos el chasis a PLA impreso en 3D logrando un costo de fabricación de cuatrocientos veinte soles; y eliminamos el procesamiento en la nube para asegurar que la orden de emergencia se ejecute incluso sin conexión a internet.',
+          'Aplicamos SCAMPER con métricas verificadas: sustituimos EMG por Edge NLP en 3 idiomas con 91,7 % de precisión; combinamos control difuso y registro offline en IndexedDB; modificamos el chasis a PLA FDM logrando un BOM de S/ 420; y eliminamos la nube para garantizar respuesta inmediata sin internet.',
       },
       {
         id: 'a-5',
@@ -336,7 +347,7 @@ export const ROLE_PRESENTATIONS: RolePresentationDeck[] = [
         referenceTags: ['P21 Toro-Ossaba 2024', 'P09 Li 2026', 'P13 Li 2025', 'R13 Abdallah 2024'],
         deliveryCue: 'Recorrer visualmente las cifras exactas del flujo PRISMA: 820 → 558 → 85 → 31.',
         speechScript:
-          'En la revisión sistemática ejecuté ecuaciones booleanas en Scopus, Web of Science y ScienceDirect obteniendo ochocientos veinte registros. Tras eliminar doscientos sesenta y dos duplicados, cribamos en paralelo quinientos cincuenta y ocho resúmenes y evaluamos ochenta y cinco textos completos, consolidando treinta y un estudios primarios con DOI verificable, respaldados metodológicamente por nuestras dos revisiones guía y ocho referentes previos como Abdallah y Triwiyanto.',
+          'En metodología PRISMA ejecuté ecuaciones booleanas en Scopus (385), WoS (245) y ScienceDirect (190), sumando 820 registros. Eliminados 262 duplicados, cribamos en doble ciego 558 resúmenes y evaluamos 85 textos completos hasta consolidar 31 estudios primarios con DOI, respaldados por 2 guías y 8 referentes como Abdallah (2024) y Triwiyanto (2025).',
       },
       {
         id: 'a-6',
@@ -358,7 +369,7 @@ export const ROLE_PRESENTATIONS: RolePresentationDeck[] = [
         referenceTags: ['P08 Kansal 2023', 'R27 Syukriyah 2026'],
         deliveryCue: 'Destacar que incluso con 20 % menos ingresos el proyecto sigue siendo viable.',
         speechScript:
-          'Desde la evaluación financiera, nuestra inversión inicial de veinticuatro mil soles se recupera en tres coma sesenta y nueve años. El flujo proyectado a cinco años con una tasa de descuento del doce por ciento entrega un VAN de nueve mil quinientos ochenta y nueve soles, una TIR de veinticinco coma dieciséis por ciento y un beneficio-costo de uno coma cuarenta. Incluso simulando una caída severa del veinte por ciento en los ingresos, el VAN sigue siendo positivo con dos mil ochocientos setenta y un soles.',
+          'En evaluación financiera a 5 años (COK 12 %), nuestra inversión de S/ 24 000 se recupera en 3,69 años. La venta clínica a S/ 1 150 (63,5 % margen) más el alquiler a S/ 140/mes generan un VAN de S/ 9 589,89, TIR de 25,16 % y B/C de 1,40; incluso ante estrés de −20 %, el VAN sigue en S/ 2 871,91 (TIR 16,16 %).',
       },
       {
         id: 'a-7',
@@ -379,7 +390,7 @@ export const ROLE_PRESENTATIONS: RolePresentationDeck[] = [
         referenceTags: ['P04 Li 2026', 'P18 Zhang 2025', 'P31 Guo 2022'],
         deliveryCue: 'Pausa breve tras mencionar las alertas automáticas.',
         speechScript:
-          'Más allá de los números, cada repetición y reporte de dolor igual o mayor a siete sobre diez genera una alerta automática para el fisioterapeuta, en sintonía con sistemas de telerehabilitación multisensor publicados en dos mil veintiséis. Así unimos el rigor de la ingeniería de control con los ODS tres, nueve y diez.',
+          'Cada repetición y reporte de dolor ≥ 7/10 detiene el actuador y dispara una alerta automática al fisioterapeuta, alineado con sistemas multisensor de 2026. Así unimos el control seguro en > 80 % de ahorro familiar con los ODS 3, 9 y 10.',
       },
       {
         id: 'a-8',
@@ -398,7 +409,7 @@ export const ROLE_PRESENTATIONS: RolePresentationDeck[] = [
         ],
         deliveryCue: 'Cierre enérgico y seguro dentro de los 3 minutos exactos.',
         speechScript:
-          'Con hardware probado, aislamiento eléctrico validado, treinta y un estudios primarios respaldando nuestra metodología y un VAN positivo bajo escenarios adversos, ALMA está listo para su piloto clínico con diez equipos en Lima Norte. Buscamos centros de rehabilitación aliados para iniciar la validación con pacientes este semestre. Muchas gracias.',
+          'Con hardware validado, aislamiento eléctrico probado, 31 estudios primarios y VAN positivo bajo estrés, ALMA está listo para desplegar 10 unidades piloto en Lima Norte. Buscamos centros aliados para iniciar ensayos clínicos este semestre. Muchas gracias.',
       },
     ],
   },
@@ -431,7 +442,7 @@ export const ROLE_PRESENTATIONS: RolePresentationDeck[] = [
         ],
         deliveryCue: 'Enfatizar el contraste de precios desde la primera frase.',
         speechScript:
-          '¿Por qué, si la robótica de rehabilitación demuestra excelentes resultados clínicos, casi ningún paciente post-ACV en el Perú tiene acceso a un exoesqueleto en casa? La respuesta está en la brecha de costo y complejidad de interfaz. Soy José Casariego, responsable de la matriz de resultados y bibliometría del grupo ALMA, y hoy les presento lo que treinta y un estudios primarios internacionales revelan a favor de nuestra solución.',
+          '¿Por qué, si la robótica clínica funciona, casi ningún paciente post-ACV accede a un exoesqueleto en casa? La brecha está en precios > US$ 1 500 y sensores complejos. Soy José Casariego, responsable de resultados y bibliometría en ALMA, y hoy resumo lo que 31 estudios primarios y 8 referentes respaldan.',
       },
       {
         id: 'j-2',
@@ -453,7 +464,7 @@ export const ROLE_PRESENTATIONS: RolePresentationDeck[] = [
         referenceTags: ['G01 Karasheva 2025', 'R31 Spits 2022', 'R32 Feigin 2024'],
         deliveryCue: 'Citar brevemente el hallazgo de autonomía en el hogar.',
         speechScript:
-          'Las entrevistas de Design Thinking con cuatro pacientes y dos fisioterapeutas reflejaron exactamente lo que reportan Karasheva en dos mil veinticinco y Spits en dos mil veintidós: el sesenta y cinco por ciento carece de terapia continua, los sensores sEMG presentan variabilidad crítica ante espasticidad y si un equipo toma más de tres minutos en colocarse el paciente abandona el tratamiento.',
+          'Las entrevistas con 4 pacientes y 2 terapeutas reflejaron exactamente lo reportado por Karasheva (2025) y Spits (2022): el 65 % carece de terapia continua, los electrodos sEMG fallan ante espasticidad y, si la colocación supera los 3 min, el paciente abandona el tratamiento.',
       },
       {
         id: 'j-3',
@@ -475,7 +486,7 @@ export const ROLE_PRESENTATIONS: RolePresentationDeck[] = [
         referenceTags: ['P02 Ly 2026', 'P22 Zhang 2026', 'P31 Guo 2022'],
         deliveryCue: 'Mostrar los 4 módulos del sistema ALMA en pantalla.',
         speechScript:
-          'ALMA resuelve esa barrera integrando un exoesqueleto ergonómico de codo modelado en Autodesk Inventor e impreso en PLA ligero, accionado por un servomotor de cuarenta kilogramos por centímetro limitado a noventa grados. Al igual que referentes recientes de diseño modular y control por voz, el paciente comanda su rutina hablando en español peruano mientras el servidor clínico Node.js registra cada sesión.',
+          'ALMA integra 26 piezas biomiméticas en PLA impresas en 3D con un servomotor de 40 kg·cm limitado de 0° a 90°. Siguiendo referentes de diseño modular (Ly 2026) y control vocal ligero (Guo 2022, ~2 ms), el paciente comanda su rutina en español peruano con trazabilidad directa en API Node.js.',
       },
       {
         id: 'j-4',
@@ -496,7 +507,7 @@ export const ROLE_PRESENTATIONS: RolePresentationDeck[] = [
         ],
         deliveryCue: 'Hacer énfasis en el 91,70 % de precisión y S/ 420 de costo.',
         speechScript:
-          'Mediante SCAMPER validamos cuatro mejoras cuantificables: sustituimos los electrodos EMG por voz local con noventa y uno coma siete por ciento de precisión; combinamos control PWM y registro clínico offline; modificamos la alimentación con regulador XL4015 asegurando dos coma setenta y cinco horas continuas y un BOM de cuatrocientos veinte soles; y eliminamos la nube para garantizar respuesta menor a veinte milisegundos.',
+          'Mediante SCAMPER validamos 4 mejoras cuantificables: sustituimos sEMG por voz local con 91,7 % de precisión; combinamos PWM y registro offline; modificamos la potencia con XL4015 logrando 2,75 h de autonomía y BOM de S/ 420 (~US$ 112); y eliminamos la nube logrando respuesta < 20 ms.',
       },
       {
         id: 'j-5',
@@ -519,7 +530,7 @@ export const ROLE_PRESENTATIONS: RolePresentationDeck[] = [
         referenceTags: ['P21 Toro-Ossaba 2024', 'P31 Guo 2022', 'P14 Zheng 2025', 'P08 Kansal 2023', 'R27 Syukriyah 2026', 'R13 Abdallah 2024'],
         deliveryCue: 'Señalar cómo cada RQ se responde directamente con la matriz de extracción y VOSviewer.',
         speechScript:
-          'Al sistematizar los treinta y un estudios primarios incluidos, cien por ciento publicados entre dos mil veintidós y dos mil veintiséis y agrupados en tres clústeres siguiendo la plantilla de Shafaie, obtuvimos tres hallazgos clave. En RQ1, Toro-Ossaba valida el ESP32 en exoesqueleto de codo y Guo demuestra el control por voz ligero en dos milisegundos. En RQ2, Kansal confirma chasis PLA 3D en ciento siete dólares y Syukriyah fija el umbral costo-efectivo bajo quinientos dólares. Y en RQ3, Li, Zhang y Abdallah sustentan nuestras barreras de seguridad.',
+          'Al sintetizar los 31 estudios primarios (100 % publicados entre 2022 y 2026) en 3 clústeres VOSviewer según Shafaie (2026), respondimos nuestras 3 preguntas: en RQ1, Toro-Ossaba (2024) valida ESP32, Guo (2022) voz embebida y Zheng (2025) ΔFMA-UE +13,34; en RQ2, Kansal (2023) logra PLA en US$ 107 y Syukriyah (2026) fija umbral < US$ 500; y en RQ3, Li (2026), Zhang (2025) y Abdallah (2024) respaldan seguridad.',
       },
       {
         id: 'j-6',
@@ -540,7 +551,7 @@ export const ROLE_PRESENTATIONS: RolePresentationDeck[] = [
         referenceTags: ['R26 Samkharadze 2026', 'R27 Syukriyah 2026'],
         deliveryCue: 'Mostrar tabla financiera y destacar B/C = 1,40.',
         speechScript:
-          'Esta ventaja de costos se traduce en un modelo financiero sólido: con veinticuatro mil soles de inversión inicial y ventas a clínicas más alquiler domiciliario a ciento cuarenta soles al mes, alcanzamos un VAN de nueve mil quinientos ochenta y nueve soles, TIR de veinticinco coma dieciséis por ciento, beneficio-costo de uno coma cuarenta y recuperación en tres coma sesenta y nueve años, manteniéndose rentable incluso ante una caída de veinte por ciento.',
+          'Esta ventaja de costos sustenta la proyección a 5 años (COK 12 %): con S/ 24 000 de inversión, venta clínica a S/ 1 150 y alquiler a S/ 140/mes, logramos VAN de S/ 9 589,89, TIR de 25,16 %, B/C de 1,40 y PRI de 3,69 años, manteniendo VAN positivo (S/ 2 871,91) aun cayendo −20 %.',
       },
       {
         id: 'j-7',
@@ -560,7 +571,7 @@ export const ROLE_PRESENTATIONS: RolePresentationDeck[] = [
         referenceTags: ['P19 Gonçalves 2026', 'R30 Candio 2022'],
         deliveryCue: 'Comparar S/ 140 mensual frente al gasto de traslado tradicional.',
         speechScript:
-          'Comparado con más de quinientos soles mensuales entre sesiones y transporte, ofrecer ALMA a ciento cuarenta soles al mes democratiza la recuperación post-ACV. Así vinculamos directamente nuestra matriz científica con los ODS tres, nueve y diez.',
+          'Frente a > S/ 540 mensuales entre sesiones y traslados, alquilar ALMA a S/ 140/mes democratiza la recuperación en casa y concreta los ODS 3, 9 y 10.',
       },
       {
         id: 'j-8',
@@ -579,7 +590,7 @@ export const ROLE_PRESENTATIONS: RolePresentationDeck[] = [
         ],
         deliveryCue: 'Cerrar con tono seguro y agradecimiento claro.',
         speechScript:
-          'Treinta y un estudios primarios, dos revisiones guía y ocho referentes económicos validan nuestra arquitectura, y los números demuestran su sostenibilidad. Hoy buscamos dos clínicas de fisioterapia aliadas para ejecutar nuestro piloto de ocho semanas con diez exoesqueletos ALMA. Muchas gracias.',
+          '31 estudios primarios, 2 guías y 8 referentes económicos respaldan nuestra arquitectura. Buscamos 2 clínicas aliadas en Lima para validar métricas FMA-UE durante 8 semanas con 10 exoesqueletos ALMA. Muchas gracias.',
       },
     ],
   },
@@ -612,7 +623,7 @@ export const ROLE_PRESENTATIONS: RolePresentationDeck[] = [
         ],
         deliveryCue: 'Comenzar con tono ejecutivo y mirada segura a cámara.',
         speechScript:
-          '¿Puede un exoesqueleto robótico fabricado con cuatrocientos veinte soles resolver la falta de rehabilitación domiciliaria y generar un negocio sostenible desde el primer año? Soy Hanns Maza, responsable de la evaluación económica, modelo de negocio e impacto ODS del proyecto ALMA en la UPN, y en los próximos tres minutos les demostraré con datos que ingeniería accesible y rentabilidad financiera van de la mano.',
+          '¿Puede un exoesqueleto robótico de S/ 420 resolver la crisis de rehabilitación domiciliaria y ser rentable desde el Año 1? Soy Hanns Maza, encargado del modelo de negocio, finanzas e impacto ODS en ALMA, y en 3 minutos les demostraré con cifras que ingeniería accesible y rentabilidad van de la mano.',
       },
       {
         id: 'h-2',
@@ -633,7 +644,7 @@ export const ROLE_PRESENTATIONS: RolePresentationDeck[] = [
         ],
         deliveryCue: 'Contrastar el gasto mensual de S/ 540 con la realidad de las familias.',
         speechScript:
-          'Durante la fase de empatía entrevistamos a cuatro pacientes post-ACV y dos fisioterapeutas en Lima Norte. Comprobamos que una familia gasta más de quinientos cuarenta soles mensuales solo en traslados y sesiones ambulatorias, lo que explica que el sesenta por ciento abandone la terapia antes del tercer mes. Mientras tanto, los exoesqueletos comerciales superan los mil quinientos dólares, dejando un vacío enorme para el mercado latinoamericano.',
+          'En Design Thinking entrevistamos a 4 pacientes post-ACV y 2 fisioterapeutas en Lima Norte. Confirmamos que el 65 % carece de terapia continua y cada familia gasta > S/ 540 mensuales entre sesiones y traslados, causando un 60 % de abandono antes del mes 3. Los equipos comerciales (> US$ 1 500) son inalcanzables.',
       },
       {
         id: 'h-3',
@@ -654,7 +665,7 @@ export const ROLE_PRESENTATIONS: RolePresentationDeck[] = [
         ],
         deliveryCue: 'Mostrar los componentes principales y su integración con la plataforma clínica.',
         speechScript:
-          'ALMA ataca este problema integrando manufactura aditiva en PLA, un microcontrolador ESP32 con aislamiento de potencia XL4015, un servomotor de cuarenta kilogramos por centímetro limitado a noventa grados y un motor de voz Edge NLP con noventa y uno coma siete por ciento de precisión. Así el paciente entrena en casa hablando con naturalidad y el fisioterapeuta audita repeticiones y alertas de dolor desde nuestro servidor.',
+          'ALMA resuelve esta brecha integrando 26 piezas PLA impresas en 3D, un ESP32 con aislamiento XL4015, un actuador de 40 kg·cm limitado de 0° a 90° y Edge NLP con 91,7 % de precisión y < 20 ms de latencia. El paciente entrena por voz en casa mientras el terapeuta audita alertas online u offline.',
       },
       {
         id: 'h-4',
@@ -675,7 +686,7 @@ export const ROLE_PRESENTATIONS: RolePresentationDeck[] = [
         ],
         deliveryCue: 'Enlazar cada mejora técnica de SCAMPER con el ahorro en soles.',
         speechScript:
-          'Cada letra de SCAMPER mejoró directamente nuestra estructura de costos: al sustituir electrodos sEMG por voz ahorramos ciento ochenta soles por equipo; al combinar control y telemetría en un solo ESP32 evitamos placas adicionales; al modificar la estructura a impresión 3D PLA alcanzamos un costo directo de cuatrocientos veinte soles; y al eliminar la dependencia de la nube aseguramos respuesta menor a veinte milisegundos sin pagar servidores costosos.',
+          'Cada mejora SCAMPER optimizó nuestros costos: al sustituir electrodos sEMG por voz ahorramos S/ 180 por unidad; al combinar control y telemetría en 1 ESP32 evitamos placas extra; al modificar el chasis a PLA FDM logramos un BOM de S/ 420 (63,5 % margen); y al eliminar la nube operamos sin cuotas costosas.',
       },
       {
         id: 'h-5',
@@ -697,7 +708,7 @@ export const ROLE_PRESENTATIONS: RolePresentationDeck[] = [
         referenceTags: ['G02 Shafaie 2026', 'P08 Kansal 2023', 'R26 Samkharadze 2026', 'R27 Syukriyah 2026'],
         deliveryCue: 'Recorrer los dos motores de ingreso del Business Model Canvas.',
         speechScript:
-          'Estructuramos un Business Model Canvas de doble flujo que responde a la brecha de sostenibilidad económica señalada por Shafaie en dos mil veintiséis y se valida frente a referentes de bajo costo como Kansal, Samkharadze y Syukriyah. Vendemos unidades completas a clínicas locales a mil ciento cincuenta soles con sesenta y tres coma cinco por ciento de margen bruto, y ofrecemos un plan de alquiler domiciliario de ciento cuarenta soles mensuales con telemonitoreo.',
+          'Diseñamos un Business Model Canvas B2B2C que responde a la brecha económica de Shafaie (2026) y se alinea con referentes como Kansal (2023), Samkharadze (2026) y Syukriyah (2026). Vendemos equipos a clínicas a S/ 1 150 con S/ 730 de margen bruto, y ofrecemos alquiler domiciliario a S/ 140/mes con telemonitoreo clínico.',
       },
       {
         id: 'h-6',
@@ -718,7 +729,7 @@ export const ROLE_PRESENTATIONS: RolePresentationDeck[] = [
         ],
         deliveryCue: 'Señalar con claridad la fila de sensibilidad −20 % en la tabla.',
         speechScript:
-          'Nuestro modelo financiero a cinco años con una tasa de descuento del doce por ciento parte de veinticuatro mil soles de inversión y flujos netos que crecen de seis mil doscientos a trece mil soles. Obtenemos un VAN base de nueve mil quinientos ochenta y nueve coma ochenta y nueve soles, una TIR de veinticinco coma dieciséis por ciento, relación beneficio-costo de uno coma cuarenta y recupero descontado en tres coma sesenta y nueve años. En sensibilidad, incluso cayendo veinte por ciento los flujos, el VAN es de dos mil ochocientos setenta y un soles y la TIR supera el dieciséis por ciento.',
+          'Nuestro modelo financiero a 5 años, evaluado al 12 % de COK, parte de S/ 24 000 de inversión para 2 impresoras 3D, 10 equipos piloto y plataforma, con flujos netos crecientes de S/ 6 200 a S/ 13 000. Obtenemos un VAN base de S/ 9 589,89, TIR de 25,16 %, B/C de 1,40 y PRI descontado de 3,69 años. Incluso en escenario pesimista de −20 %, el VAN es S/ 2 871,91 y la TIR de 16,16 %.',
       },
       {
         id: 'h-7',
@@ -740,7 +751,7 @@ export const ROLE_PRESENTATIONS: RolePresentationDeck[] = [
         referenceTags: ['P14 Zheng 2025', 'P19 Gonçalves 2026', 'R30 Candio 2022', 'R31 Spits 2022'],
         deliveryCue: 'Resaltar el ahorro del 74 % mensual para las familias.',
         speechScript:
-          'Treinta y un estudios primarios revisados bajo PRISMA 2020 y ocho referentes previos respaldan estos números: la rehabilitación domiciliaria mejora la función motora y reduce costos societales cuando el hardware es accesible. Con ALMA una familia ahorra setenta y cuatro por ciento mensual frente a terapia y traslados, materializando los ODS tres, nueve y diez con tecnología mecatrónica peruana.',
+          'Esta viabilidad se apoya en 31 estudios primarios PRISMA 2020 (2022–2026) y 8 referentes: la telerehabilitación accesible mejora la recuperación motora y baja costos sociales. Con ALMA cada familia ahorra 74 % mensual (S/ 140 frente a > S/ 540), materializando los ODS 3, 9 y 10.',
       },
       {
         id: 'h-8',
@@ -759,7 +770,7 @@ export const ROLE_PRESENTATIONS: RolePresentationDeck[] = [
         ],
         deliveryCue: 'Finalizar con invitación directa a revisar el Excel financiero y el prototipo.',
         speechScript:
-          'Con un prototipo operativo, treinta y un estudios primarios verificados más ocho referentes económicos y una TIR superior al veinticinco por ciento, ALMA demuestra que es posible construir tecnología médica rentable e inclusiva desde el Perú. Invitamos a clínicas de rehabilitación e inversionistas de impacto a financiar nuestro primer lote piloto de diez unidades. Muchas gracias.',
+          'Con prototipo operativo, 41 DOIs verificables y TIR de 25,16 %, demostramos que es viable crear tecnología médica rentable e inclusiva en el Perú. Invitamos a clínicas e inversionistas a financiar el piloto de 10 equipos para 20 pacientes en Lima Norte. Muchas gracias.',
       },
     ],
   },

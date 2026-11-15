@@ -1,6 +1,23 @@
 import PptxGenJS from 'pptxgenjs';
-import type { RolePresentationDeck } from '../data/presentationsData';
+import { SLIDE_KIND_LABELS, type RolePresentationDeck } from '../data/presentationsData';
 import { COURSE_METADATA } from '../data/teamMembers';
+
+function estimateLineCount(text: string, maxCharsPerLine: number): number {
+  const words = text.trim().split(/\s+/).filter(Boolean);
+  if (words.length === 0) return 1;
+  let lines = 1;
+  let currentLen = 0;
+  for (const word of words) {
+    const nextLen = currentLen === 0 ? word.length : currentLen + 1 + word.length;
+    if (nextLen > maxCharsPerLine && currentLen > 0) {
+      lines += 1;
+      currentLen = word.length;
+    } else {
+      currentLen = nextLen;
+    }
+  }
+  return lines;
+}
 
 export async function exportPresentationPptx(
   deck: RolePresentationDeck,
@@ -16,214 +33,276 @@ export async function exportPresentationPptx(
   const safeTag = deck.memberName.split(' ').slice(0, 2).join('');
   const outName = filename ?? `${COURSE_METADATA.groupCode}_${safeTag}_Pitch_ALMA.pptx`;
 
+  const marginX = 0.55;
+  const contentW = 10 - marginX * 2; // 8.90 in
+
   for (const slideData of deck.slides) {
     const slide = pptx.addSlide();
-    slide.background = { color: 'F8FAFC' };
+    slide.background = { color: 'FFFFFF' };
 
-    // Barra superior editorial (16:9 width = 10 inches, height = 5.625 inches)
-    slide.addShape(pptx.ShapeType.rect, {
-      x: 0,
-      y: 0,
-      w: 10,
-      h: 0.52,
-      fill: { color: '0F172A' },
-      line: { color: '0F172A' },
-    });
-
+    // Encabezado editorial limpio sobre fondo blanco (idéntico al HTML)
     slide.addText(
-      `ALMA · Exoesqueleto Mecatrónico UPN (Grupo ${COURSE_METADATA.groupCode}) · ${deck.memberName} (${deck.memberCode})`,
+      `DIAPOSITIVA ${slideData.number} / ${deck.slides.length} · ${SLIDE_KIND_LABELS[slideData.kind].toUpperCase()}`,
       {
-        x: 0.4,
-        y: 0.1,
-        w: 6.8,
-        h: 0.32,
+        x: marginX,
+        y: 0.34,
+        w: 5.2,
+        h: 0.22,
         fontFace: 'Arial',
-        fontSize: 10,
+        fontSize: 8.5,
         bold: true,
-        color: 'FFFFFF',
+        charSpacing: 0.6,
+        color: '64748B',
+        margin: 0,
       },
     );
 
-    slide.addText(`Diapositiva ${slideData.number} / ${deck.slides.length} · ${slideData.timeRange}`, {
-      x: 7.2,
-      y: 0.1,
-      w: 2.4,
-      h: 0.32,
+    slide.addText(`${slideData.timeRange} · ${deck.memberName}`, {
+      x: marginX + 5.2,
+      y: 0.34,
+      w: contentW - 5.2,
+      h: 0.22,
       align: 'right',
-      fontFace: 'Arial',
-      fontSize: 9.5,
-      color: 'CBD5E1',
-    });
-
-    // Kicker de bloque
-    slide.addText(slideData.blockLabel.toUpperCase(), {
-      x: 0.45,
-      y: 0.66,
-      w: 9.1,
-      h: 0.24,
-      fontFace: 'Arial',
-      fontSize: 9.5,
-      bold: true,
-      color: '1D4ED8',
-    });
-
-    // Título principal
-    slide.addText(slideData.title, {
-      x: 0.45,
-      y: 0.92,
-      w: 9.1,
-      h: 0.65,
-      fontFace: 'Arial',
-      fontSize: slideData.kind === 'cover' ? 21 : 19,
-      bold: true,
-      color: '0F172A',
-      valign: 'top',
-    });
-
-    // Subtítulo
-    slide.addText(slideData.subtitle, {
-      x: 0.45,
-      y: 1.58,
-      w: 9.1,
-      h: 0.34,
-      fontFace: 'Arial',
-      fontSize: 11.5,
+      fontFace: 'Consolas',
+      fontSize: 8.5,
       color: '475569',
+      margin: 0,
     });
 
-    let contentTopY = 2.04;
+    slide.addShape(pptx.ShapeType.line, {
+      x: marginX,
+      y: 0.60,
+      w: contentW,
+      h: 0,
+      line: { color: 'E2E8F0', width: 0.75 },
+    });
 
-    // Franja KPI (2 o 3 cajas)
+    // Título principal y subtítulo
+    let cursorY = 0.72;
+    const isCover = slideData.kind === 'cover';
+    const titleFontSize = isCover ? 18.5 : 17;
+    const titleLines = estimateLineCount(slideData.title, isCover ? 60 : 66);
+    const titleH = Math.max(0.32, titleLines * (isCover ? 0.30 : 0.28) + 0.04);
+
+    slide.addText(slideData.title, {
+      x: marginX,
+      y: cursorY,
+      w: contentW,
+      h: titleH,
+      fontFace: 'Arial',
+      fontSize: titleFontSize,
+      bold: true,
+      color: '020617',
+      valign: 'top',
+      margin: 0,
+    });
+    cursorY += titleH + 0.05;
+
+    const subLines = estimateLineCount(slideData.subtitle, 100);
+    const subH = Math.max(0.22, subLines * 0.20 + 0.02);
+    slide.addText(slideData.subtitle, {
+      x: marginX,
+      y: cursorY,
+      w: contentW,
+      h: subH,
+      fontFace: 'Arial',
+      fontSize: 10.5,
+      color: '475569',
+      valign: 'top',
+      margin: 0,
+    });
+    cursorY += subH;
+
+    // Franja KPI (2 o 3 cajas slate-50 sin borde, idéntico al HTML)
     if (slideData.kpis && slideData.kpis.length > 0) {
+      cursorY += 0.18;
       const kpis = slideData.kpis;
-      const gap = 0.2;
-      const totalW = 9.1;
-      const cardW = (totalW - gap * (kpis.length - 1)) / kpis.length;
+      const gap = 0.18;
+      const cardW = (contentW - gap * (kpis.length - 1)) / kpis.length;
+      const cardH = 0.96;
 
       kpis.forEach((kpi, idx) => {
-        const kx = 0.45 + idx * (cardW + gap);
+        const kx = marginX + idx * (cardW + gap);
         slide.addShape(pptx.ShapeType.rect, {
           x: kx,
-          y: contentTopY,
+          y: cursorY,
           w: cardW,
-          h: 1.08,
-          fill: { color: 'FFFFFF' },
-          line: { color: 'CBD5E1', width: 1 },
+          h: cardH,
+          fill: { color: 'F8FAFC' },
+          line: { color: 'F8FAFC', width: 0 },
         });
 
-        slide.addText(kpi.label, {
-          x: kx + 0.14,
-          y: contentTopY + 0.1,
-          w: cardW - 0.28,
-          h: 0.22,
+        slide.addText(kpi.label.toUpperCase(), {
+          x: kx + 0.16,
+          y: cursorY + 0.11,
+          w: cardW - 0.32,
+          h: 0.18,
           fontFace: 'Arial',
-          fontSize: 9,
+          fontSize: 8,
           bold: true,
+          charSpacing: 0.4,
           color: '64748B',
+          margin: 0,
         });
 
         slide.addText(kpi.value, {
-          x: kx + 0.14,
-          y: contentTopY + 0.34,
-          w: cardW - 0.28,
-          h: 0.38,
+          x: kx + 0.16,
+          y: cursorY + 0.32,
+          w: cardW - 0.32,
+          h: 0.34,
           fontFace: 'Arial',
-          fontSize: 17,
+          fontSize: 16,
           bold: true,
-          color: '1D4ED8',
+          color: '1E40AF',
+          margin: 0,
         });
 
         if (kpi.note) {
           slide.addText(kpi.note, {
-            x: kx + 0.14,
-            y: contentTopY + 0.74,
-            w: cardW - 0.28,
-            h: 0.26,
+            x: kx + 0.16,
+            y: cursorY + 0.68,
+            w: cardW - 0.32,
+            h: 0.20,
             fontFace: 'Arial',
-            fontSize: 8.5,
+            fontSize: 8,
             color: '475569',
+            margin: 0,
           });
         }
       });
 
-      contentTopY += 1.24;
+      cursorY += cardH;
     }
 
-    // Caja de puntos clave
-    const boxHeight = 5.05 - contentTopY;
-    slide.addShape(pptx.ShapeType.rect, {
-      x: 0.45,
-      y: contentTopY,
-      w: 9.1,
-      h: boxHeight,
-      fill: { color: 'FFFFFF' },
-      line: { color: 'CBD5E1', width: 1 },
-    });
+    // Puntos clave directamente sobre fondo blanco con numeración 01, 02, 03 en azul
+    cursorY += 0.20;
+    slideData.bullets.forEach((bullet, idx) => {
+      const bLines = estimateLineCount(bullet, 94);
+      const rowH = Math.max(0.24, bLines * 0.21 + 0.03);
 
-    const bulletItems = slideData.bullets.map((b) => ({
-      text: b,
-      options: {
-        bullet: true,
+      slide.addText(`0${idx + 1}`, {
+        x: marginX,
+        y: cursorY + 0.01,
+        w: 0.30,
+        h: 0.22,
+        fontFace: 'Consolas',
+        fontSize: 9.5,
+        bold: true,
+        color: '1D4ED8',
+        margin: 0,
+      });
+
+      slide.addText(bullet, {
+        x: marginX + 0.34,
+        y: cursorY,
+        w: contentW - 0.34,
+        h: rowH,
         fontFace: 'Arial',
-        fontSize: 12.5,
+        fontSize: 10.5,
         color: '1E293B',
-        breakLine: true,
-        paraSpaceAfter: 8,
-      },
-    }));
+        valign: 'top',
+        margin: 0,
+      });
 
-    slide.addText(bulletItems, {
-      x: 0.62,
-      y: contentTopY + 0.16,
-      w: 8.75,
-      h: boxHeight - (slideData.referenceTags && slideData.referenceTags.length > 0 ? 0.55 : 0.28),
-      valign: 'top',
+      cursorY += rowH + 0.07;
     });
 
+    // Nota destacada opcional (bg-blue-50)
+    if (slideData.highlightNote) {
+      cursorY += 0.08;
+      const nLines = estimateLineCount(slideData.highlightNote, 100);
+      const noteH = Math.max(0.30, nLines * 0.19 + 0.12);
+      slide.addShape(pptx.ShapeType.rect, {
+        x: marginX,
+        y: cursorY,
+        w: contentW,
+        h: noteH,
+        fill: { color: 'EFF6FF' },
+        line: { color: 'EFF6FF', width: 0 },
+      });
+      slide.addText(slideData.highlightNote, {
+        x: marginX + 0.14,
+        y: cursorY + 0.06,
+        w: contentW - 0.28,
+        h: noteH - 0.12,
+        fontFace: 'Arial',
+        fontSize: 9.5,
+        bold: true,
+        color: '172554',
+        valign: 'middle',
+        margin: 0,
+      });
+      cursorY += noteH;
+    }
+
+    // Fuentes citadas (opcional)
     if (slideData.referenceTags && slideData.referenceTags.length > 0) {
-      slide.addText(`Fuentes verificadas: ${slideData.referenceTags.join('  ·  ')}`, {
-        x: 0.62,
-        y: contentTopY + boxHeight - 0.34,
-        w: 8.75,
+      const refY = Math.min(4.72, Math.max(cursorY + 0.10, 4.56));
+      slide.addShape(pptx.ShapeType.line, {
+        x: marginX,
+        y: refY,
+        w: contentW,
+        h: 0,
+        line: { color: 'F1F5F9', width: 0.75 },
+      });
+
+      slide.addText(
+        [
+          {
+            text: 'Fuentes citadas:   ',
+            options: { fontFace: 'Arial', fontSize: 8.5, bold: true, color: '334155' },
+          },
+          {
+            text: slideData.referenceTags.join('   ·   '),
+            options: { fontFace: 'Consolas', fontSize: 8.5, color: '334155' },
+          },
+        ],
+        {
+          x: marginX,
+          y: refY + 0.06,
+          w: contentW,
+          h: 0.24,
+          margin: 0,
+        },
+      );
+    }
+
+    // Pie fijo limpio de la diapositiva (idéntico al HTML)
+    slide.addShape(pptx.ShapeType.line, {
+      x: marginX,
+      y: 5.06,
+      w: contentW,
+      h: 0,
+      line: { color: 'E2E8F0', width: 0.75 },
+    });
+
+    slide.addText(
+      `ALMA · Exoesqueleto Mecatrónico UPN (Grupo ${COURSE_METADATA.groupCode}) · Revisión Sistemática PRISMA 2020`,
+      {
+        x: marginX,
+        y: 5.14,
+        w: 6.1,
         h: 0.24,
         fontFace: 'Arial',
         fontSize: 8.5,
-        italic: true,
         color: '64748B',
-      });
-    }
+        margin: 0,
+      },
+    );
 
-    // Pie de diapositiva
-    slide.addShape(pptx.ShapeType.line, {
-      x: 0.45,
-      y: 5.18,
-      w: 9.1,
-      h: 0,
-      line: { color: 'CBD5E1', width: 0.75 },
-    });
-
-    slide.addText(`Indicador en escena: ${slideData.deliveryCue}`, {
-      x: 0.45,
-      y: 5.24,
-      w: 5.6,
-      h: 0.26,
-      fontFace: 'Arial',
-      fontSize: 8.5,
-      color: '64748B',
-    });
-
-    slide.addText(deck.roleTitle, {
-      x: 6.1,
-      y: 5.24,
-      w: 3.45,
-      h: 0.26,
+    slide.addText(`${deck.memberCode} · Examen por Competencias T3`, {
+      x: marginX + 6.1,
+      y: 5.14,
+      w: contentW - 6.1,
+      h: 0.24,
       align: 'right',
-      fontFace: 'Arial',
+      fontFace: 'Consolas',
       fontSize: 8.5,
       color: '64748B',
+      margin: 0,
     });
 
-    // Notas del orador (guion exacto de 3 minutos en PowerPoint Presenter View)
+    // Notas del orador (guion optimizado en PowerPoint Presenter View)
     slide.addNotes(
       `[${slideData.timeRange}] ${slideData.title}\n\nGUION:\n${slideData.speechScript}\n\nINDICACIÓN: ${slideData.deliveryCue}`,
     );

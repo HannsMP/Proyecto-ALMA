@@ -14,7 +14,7 @@ import {
 import { jsPDF } from 'jspdf';
 import * as XLSX from 'xlsx';
 import { BOM_UNIT_COSTS, CANVAS_BLOCKS, VALUE_CHAIN } from '../data/almaT3Content';
-import type { RolePresentationDeck } from '../data/presentationsData';
+import { SLIDE_KIND_LABELS, type RolePresentationDeck } from '../data/presentationsData';
 import { COURSE_METADATA } from '../data/teamMembers';
 
 // ============================================================================
@@ -267,117 +267,136 @@ export function downloadPitchSlidesPdf(filename: string, deck: RolePresentationD
   const pdf = new jsPDF({ orientation: 'landscape', unit: 'mm', format: 'a4' });
   const w = pdf.internal.pageSize.getWidth(); // 297mm
   const h = pdf.internal.pageSize.getHeight(); // 210mm
-  const margin = 16;
+  const margin = 18;
+  const contentW = w - margin * 2;
 
   deck.slides.forEach((slide, idx) => {
     if (idx > 0) pdf.addPage();
 
-    // Fondo limpio editorial
-    pdf.setFillColor(248, 250, 252);
+    // Fondo blanco limpio idéntico al diseño HTML
+    pdf.setFillColor(255, 255, 255);
     pdf.rect(0, 0, w, h, 'F');
 
-    // Barra superior de diapositiva
-    pdf.setFillColor(15, 23, 42);
-    pdf.rect(0, 0, w, 16, 'F');
+    // Encabezado superior minimalista con línea divisoria (sin franja azul/oscura)
     pdf.setFont('helvetica', 'bold');
-    pdf.setFontSize(9.5);
-    pdf.setTextColor(255, 255, 255);
+    pdf.setFontSize(8.5);
+    pdf.setTextColor(100, 116, 139);
     pdf.text(
-      pdfSafe(`ALMA · Pitch T3 · ${deck.memberName} (${deck.memberCode})`),
+      pdfSafe(`DIAPOSITIVA ${slide.number} / ${deck.slides.length} · ${SLIDE_KIND_LABELS[slide.kind].toUpperCase()}`),
       margin,
-      10.5,
-    );
-    pdf.setFont('helvetica', 'normal');
-    pdf.text(
-      pdfSafe(`Diapositiva ${slide.number}/8 · ${slide.timeRange} · ${slide.blockLabel}`),
-      w - margin - 82,
-      10.5,
+      18,
     );
 
+    pdf.setFont('courier', 'normal');
+    pdf.setFontSize(8.5);
+    pdf.setTextColor(71, 85, 105);
+    const rightHeader = pdfSafe(`${slide.timeRange} · ${deck.memberName}`);
+    pdf.text(rightHeader, w - margin, 18, { align: 'right' });
+
+    pdf.setDrawColor(226, 232, 240);
+    pdf.setLineWidth(0.35);
+    pdf.line(margin, 22, w - margin, 22);
+
     // Título principal
-    let y = 30;
+    let y = 33;
     pdf.setFont('helvetica', 'bold');
-    pdf.setFontSize(17);
-    pdf.setTextColor(15, 23, 42);
-    const tLines = pdf.splitTextToSize(pdfSafe(slide.title), w - margin * 2);
+    pdf.setFontSize(slide.kind === 'cover' ? 17.5 : 16.5);
+    pdf.setTextColor(2, 6, 23);
+    const tLines = pdf.splitTextToSize(pdfSafe(slide.title), contentW);
     pdf.text(tLines, margin, y);
-    y += tLines.length * 7.5 + 2;
+    y += tLines.length * 7.5 + 1.5;
 
     if (slide.subtitle) {
       pdf.setFont('helvetica', 'normal');
-      pdf.setFontSize(11);
+      pdf.setFontSize(10.5);
       pdf.setTextColor(71, 85, 105);
-      const sLines = pdf.splitTextToSize(pdfSafe(slide.subtitle), w - margin * 2);
+      const sLines = pdf.splitTextToSize(pdfSafe(slide.subtitle), contentW);
       pdf.text(sLines, margin, y);
-      y += sLines.length * 5.2 + 5;
+      y += sLines.length * 5.0 + 6;
     }
 
-    // Banda KPI
+    // Banda KPI slate-50 sin borde (idéntica al HTML)
     if (slide.kpis && slide.kpis.length > 0) {
-      const kpiW = (w - margin * 2 - (slide.kpis.length - 1) * 5) / slide.kpis.length;
+      const kpiW = (contentW - (slide.kpis.length - 1) * 5) / slide.kpis.length;
       slide.kpis.forEach((kpi, kIdx) => {
         const kx = margin + kIdx * (kpiW + 5);
-        pdf.setFillColor(255, 255, 255);
-        pdf.setDrawColor(203, 213, 225);
-        pdf.rect(kx, y, kpiW, 25, 'FD');
+        pdf.setFillColor(248, 250, 252);
+        pdf.rect(kx, y, kpiW, 25, 'F');
 
         pdf.setFont('helvetica', 'bold');
-        pdf.setFontSize(8.5);
-        pdf.setTextColor(100, 116, 139);
-        pdf.text(pdfSafe(kpi.label), kx + 4, y + 6.5);
-
-        pdf.setFontSize(14);
-        pdf.setTextColor(29, 78, 216);
-        pdf.text(pdfSafe(kpi.value), kx + 4, y + 14.5);
-
-        pdf.setFont('helvetica', 'normal');
         pdf.setFontSize(8);
-        pdf.setTextColor(71, 85, 105);
-        const nLines = pdf.splitTextToSize(pdfSafe(kpi.note ?? ''), kpiW - 8);
-        pdf.text(nLines[0] ?? '', kx + 4, y + 21);
+        pdf.setTextColor(100, 116, 139);
+        pdf.text(pdfSafe(kpi.label.toUpperCase()), kx + 4.5, y + 6.5);
+
+        pdf.setFontSize(15);
+        pdf.setTextColor(30, 64, 175);
+        pdf.text(pdfSafe(kpi.value), kx + 4.5, y + 14.8);
+
+        if (kpi.note) {
+          pdf.setFont('helvetica', 'normal');
+          pdf.setFontSize(8);
+          pdf.setTextColor(71, 85, 105);
+          const nLines = pdf.splitTextToSize(pdfSafe(kpi.note), kpiW - 9);
+          pdf.text(nLines[0] ?? '', kx + 4.5, y + 21);
+        }
       });
       y += 33;
     }
 
-    // Puntos clave
-    pdf.setFillColor(255, 255, 255);
-    pdf.setDrawColor(203, 213, 225);
-    const boxH = h - y - 28;
-    pdf.rect(margin, y, w - margin * 2, boxH, 'FD');
+    // Puntos clave directamente sobre blanco con numeración 01, 02, 03 en azul
+    let by = y + 3;
+    slide.bullets.forEach((bullet, bIdx) => {
+      pdf.setFont('courier', 'bold');
+      pdf.setFontSize(9.5);
+      pdf.setTextColor(29, 78, 216);
+      pdf.text(`0${bIdx + 1}`, margin, by);
 
-    let by = y + 9;
-    pdf.setFont('helvetica', 'bold');
-    pdf.setFontSize(9.5);
-    pdf.setTextColor(15, 23, 42);
-    pdf.text('Puntos clave en pantalla:', margin + 5, by);
-    by += 7;
+      pdf.setFont('helvetica', 'normal');
+      pdf.setFontSize(10.5);
+      pdf.setTextColor(30, 41, 59);
+      const bLines = pdf.splitTextToSize(pdfSafe(bullet), contentW - 11);
+      pdf.text(bLines, margin + 9.5, by);
+      by += bLines.length * 5.2 + 3.5;
+    });
 
-    pdf.setFont('helvetica', 'normal');
-    pdf.setFontSize(10.5);
-    pdf.setTextColor(30, 41, 59);
-    for (const bullet of slide.bullets) {
-      const bLines = pdf.splitTextToSize(`• ${pdfSafe(bullet)}`, w - margin * 2 - 12);
-      pdf.text(bLines, margin + 6, by);
-      by += bLines.length * 5.2 + 3;
+    if (slide.highlightNote) {
+      by += 2;
+      const hLines = pdf.splitTextToSize(pdfSafe(slide.highlightNote), contentW - 8);
+      const hBox = hLines.length * 5 + 6;
+      pdf.setFillColor(239, 246, 255);
+      pdf.rect(margin, by - 4, contentW, hBox, 'F');
+      pdf.setFont('helvetica', 'bold');
+      pdf.setFontSize(9.5);
+      pdf.setTextColor(23, 37, 84);
+      pdf.text(hLines, margin + 4, by + 1);
+      by += hBox + 2;
     }
 
     if (slide.referenceTags && slide.referenceTags.length > 0) {
-      pdf.setFont('helvetica', 'italic');
+      const refY = Math.min(h - 26, Math.max(by + 3, h - 30));
+      pdf.setDrawColor(241, 245, 249);
+      pdf.line(margin, refY - 4, w - margin, refY - 4);
+      pdf.setFont('helvetica', 'bold');
       pdf.setFontSize(8.5);
-      pdf.setTextColor(71, 85, 105);
-      pdf.text(
-        pdfSafe(`Fuentes de respaldo: ${slide.referenceTags.join(' · ')}`),
-        margin + 6,
-        y + boxH - 6,
-      );
+      pdf.setTextColor(51, 65, 85);
+      pdf.text('Fuentes citadas:', margin, refY + 1);
+      pdf.setFont('courier', 'normal');
+      pdf.text(pdfSafe(slide.referenceTags.join('   ·   ')), margin + 30, refY + 1);
     }
 
-    // Pie de diapositiva
+    // Pie fijo limpio de la diapositiva
+    pdf.setDrawColor(226, 232, 240);
+    pdf.line(margin, h - 18, w - margin, h - 18);
     pdf.setFont('helvetica', 'normal');
     pdf.setFontSize(8.5);
     pdf.setTextColor(100, 116, 139);
-    pdf.text(pdfSafe(`Indicador visual: ${slide.deliveryCue}`), margin, h - 10);
-    pdf.text(pdfSafe(`${deck.roleTitle}`), w - margin - 100, h - 10);
+    pdf.text(
+      pdfSafe(`ALMA · Exoesqueleto Mecatrónico UPN (Grupo ${COURSE_METADATA.groupCode}) · Revisión Sistemática PRISMA 2020`),
+      margin,
+      h - 11.5,
+    );
+    pdf.setFont('courier', 'normal');
+    pdf.text(pdfSafe(`${deck.memberCode} · Examen por Competencias T3`), w - margin, h - 11.5, { align: 'right' });
   });
 
   pdf.save(filename);
