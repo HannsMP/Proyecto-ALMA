@@ -1,0 +1,6 @@
+{
+  "name": "Organizador Backups",
+  "description": "Gestor y organizador preciso de archivos en la carpeta backups para PDFs, PPTs, Word, Jupyter IPYNB, PNG, Node.js y planos CAD IPT/ASM.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
