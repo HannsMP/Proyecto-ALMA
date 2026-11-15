@@ -36,6 +36,32 @@ function getProjectStats(): { totalFiles: number; totalBytes: number } {
 
 async function startServer() {
   const app = express();
+  app.set('trust proxy', true);
+
+  // Deshabilitar restricciones CORS para túneles Cloudflare (alma/alama.dark-cry.com), apps móviles y pruebas externas
+  app.use((req, res, next) => {
+    const origin = req.headers.origin;
+    if (origin) {
+      res.setHeader('Access-Control-Allow-Origin', origin);
+      res.setHeader('Vary', 'Origin');
+      res.setHeader('Access-Control-Allow-Credentials', 'true');
+    } else {
+      res.setHeader('Access-Control-Allow-Origin', '*');
+    }
+    res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, PATCH, DELETE, OPTIONS, HEAD');
+    res.setHeader(
+      'Access-Control-Allow-Headers',
+      req.headers['access-control-request-headers'] || 'Origin, X-Requested-With, Content-Type, Accept, Authorization',
+    );
+    res.setHeader('Access-Control-Max-Age', '86400');
+
+    if (req.method === 'OPTIONS') {
+      res.sendStatus(204);
+      return;
+    }
+    next();
+  });
+
   app.use(express.json({ limit: '10mb' }));
 
   // Registrar el servidor backend robusto de ALMA (Pacientes, Sesiones, Repeticiones, Dolor, Alertas, Health)
@@ -64,7 +90,11 @@ async function startServer() {
 
   if (process.env.NODE_ENV !== 'production') {
     const vite = await createViteServer({
-      server: { middlewareMode: true },
+      server: {
+        middlewareMode: true,
+        allowedHosts: true,
+        cors: false,
+      },
       appType: 'spa',
     });
     app.use(vite.middlewares);

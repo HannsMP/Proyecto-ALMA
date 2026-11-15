@@ -12,6 +12,9 @@ export default defineConfig(() => {
       },
     },
     server: {
+      // Allow reverse proxies / Cloudflare Tunnels (e.g., alma.dark-cry.com / alama.dark-cry.com)
+      allowedHosts: true as const,
+      cors: true,
       // HMR is disabled in AI Studio via DISABLE_HMR env var.
       // Do not modify—file watching is disabled to prevent flickering during agent edits.
       hmr: process.env.DISABLE_HMR !== 'true',
