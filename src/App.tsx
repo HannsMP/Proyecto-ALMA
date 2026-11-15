@@ -5,7 +5,9 @@ import { InformeView } from './components/InformeView';
 import { PresentacionView } from './components/PresentacionView';
 import { ReferenciasView } from './components/ReferenciasView';
 import { SistemaAlmaView } from './components/SistemaAlmaView';
+import { ROLE_PRESENTATIONS } from './data/presentationsData';
 import { TEAM_MEMBERS, type TeamMember } from './data/teamMembers';
+import { exportPresentationPptx } from './lib/exportPptx';
 import { generateAlmaT3WordDocx } from './lib/exportWordDocx';
 
 type AppTab = 'alma' | 'entregables' | 'informe' | 'presentacion' | 'referencias';
@@ -22,9 +24,15 @@ export default function App() {
   const [activeTab, setActiveTab] = useState<AppTab>('alma');
   const [activeMemberId, setActiveMemberId] = useState<TeamMember['id']>('gabriel');
   const [exportingWord, setExportingWord] = useState(false);
+  const [exportingPpt, setExportingPpt] = useState(false);
 
   const activeMember = useMemo(
     () => TEAM_MEMBERS.find((m) => m.id === activeMemberId) ?? TEAM_MEMBERS[0],
+    [activeMemberId],
+  );
+
+  const activeDeck = useMemo(
+    () => ROLE_PRESENTATIONS.find((d) => d.memberId === activeMemberId) ?? ROLE_PRESENTATIONS[0],
     [activeMemberId],
   );
 
@@ -37,9 +45,18 @@ export default function App() {
     }
   };
 
+  const handleExportPpt = async () => {
+    setExportingPpt(true);
+    try {
+      await exportPresentationPptx(activeDeck);
+    } finally {
+      setExportingPpt(false);
+    }
+  };
+
   return (
     <div className="min-h-screen bg-slate-50 text-slate-900">
-      {/* Barra superior fija de 3 zonas: Wordmark · Navegación (5 vistas) · CTA Exportar Word */}
+      {/* Barra superior fija de 3 zonas: Wordmark · Navegación (5 vistas) · CTA contextual */}
       <header className="sticky top-0 z-30 border-b border-slate-200 bg-white">
         <div className="mx-auto flex max-w-[1440px] flex-wrap items-center justify-between gap-4 px-4 py-3 sm:px-6 lg:gap-8">
           {/* Zona 1: Wordmark */}
@@ -48,7 +65,7 @@ export default function App() {
               Proyecto ALMA
             </span>
             <span className="hidden text-xs text-slate-500 sm:inline">
-              UPN · Mecatrónica T3
+              UPN · Mecatrónica T3 · Grupo 02
             </span>
           </div>
 
@@ -75,18 +92,32 @@ export default function App() {
             })}
           </nav>
 
-          {/* Zona 3: Acción primaria única */}
-          <div className="flex items-center gap-2 shrink-0">
-            <button
-              type="button"
-              onClick={() => void handleExportWord()}
-              disabled={exportingWord}
-              title={`Exportar Word para ${activeMember.fullName}`}
-              className="inline-flex items-center gap-1.5 whitespace-nowrap shrink-0 border border-blue-700 bg-blue-700 px-3.5 py-1.5 text-xs font-semibold text-white hover:bg-blue-800 disabled:opacity-50"
-            >
-              <Download className="h-3.5 w-3.5" />
-              {exportingWord ? 'Generando .docx...' : 'Exportar Word'}
-            </button>
+          {/* Zona 3: Acción contextual (Exportar Word solo en Informe; Exportar PPT solo en Presentación) */}
+          <div className="flex min-w-[132px] items-center justify-end gap-2 shrink-0">
+            {activeTab === 'informe' && (
+              <button
+                type="button"
+                onClick={() => void handleExportWord()}
+                disabled={exportingWord}
+                title={`Exportar Word para ${activeMember.fullName}`}
+                className="inline-flex items-center gap-1.5 whitespace-nowrap shrink-0 border border-blue-700 bg-blue-700 px-3.5 py-1.5 text-xs font-semibold text-white hover:bg-blue-800 disabled:opacity-50"
+              >
+                <Download className="h-3.5 w-3.5" />
+                {exportingWord ? 'Generando .docx...' : 'Exportar Word'}
+              </button>
+            )}
+            {activeTab === 'presentacion' && (
+              <button
+                type="button"
+                onClick={() => void handleExportPpt()}
+                disabled={exportingPpt}
+                title={`Exportar PowerPoint para ${activeMember.fullName}`}
+                className="inline-flex items-center gap-1.5 whitespace-nowrap shrink-0 border border-blue-700 bg-blue-700 px-3.5 py-1.5 text-xs font-semibold text-white hover:bg-blue-800 disabled:opacity-50"
+              >
+                <Download className="h-3.5 w-3.5" />
+                {exportingPpt ? 'Generando .pptx...' : 'Exportar PPT'}
+              </button>
+            )}
           </div>
         </div>
       </header>
@@ -111,6 +142,8 @@ export default function App() {
           <PresentacionView
             activeMemberId={activeMemberId}
             onSelectMember={setActiveMemberId}
+            onExportPpt={handleExportPpt}
+            exportingPpt={exportingPpt}
           />
         )}
         {activeTab === 'referencias' && <ReferenciasView />}

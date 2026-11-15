@@ -5,6 +5,7 @@ import {
   ChevronRight,
   Clock,
   Copy,
+  Download,
   Maximize2,
   Minimize2,
   Mic,
@@ -15,6 +16,8 @@ import type { TeamMember } from '../data/teamMembers';
 interface PresentacionViewProps {
   activeMemberId: TeamMember['id'];
   onSelectMember: (id: TeamMember['id']) => void;
+  onExportPpt: () => Promise<void>;
+  exportingPpt: boolean;
 }
 
 const SLIDE_KIND_LABELS: Record<PresentationSlide['kind'], string> = {
@@ -28,7 +31,12 @@ const SLIDE_KIND_LABELS: Record<PresentationSlide['kind'], string> = {
   closing: 'Cierre y Piloto Clínico',
 };
 
-export function PresentacionView({ activeMemberId, onSelectMember }: PresentacionViewProps) {
+export function PresentacionView({
+  activeMemberId,
+  onSelectMember,
+  onExportPpt,
+  exportingPpt,
+}: PresentacionViewProps) {
   const [slideIndex, setSlideIndex] = useState(0);
   const [captureMode, setCaptureMode] = useState(false);
   const [copiedScript, setCopiedScript] = useState(false);
@@ -105,7 +113,7 @@ export function PresentacionView({ activeMemberId, onSelectMember }: Presentacio
           })}
         </div>
 
-        <div className="flex items-center gap-3">
+        <div className="flex flex-wrap items-center gap-2.5">
           <span className="text-xs text-slate-500 tabular-nums">
             Guion completo: {totalDeckWords} palabras (~3 min)
           </span>
@@ -116,6 +124,15 @@ export function PresentacionView({ activeMemberId, onSelectMember }: Presentacio
           >
             {captureMode ? <Minimize2 className="h-3.5 w-3.5" /> : <Maximize2 className="h-3.5 w-3.5" />}
             {captureMode ? 'Mostrar guion lateral' : 'Modo captura PPT'}
+          </button>
+          <button
+            type="button"
+            onClick={() => void onExportPpt()}
+            disabled={exportingPpt}
+            className="inline-flex items-center gap-1.5 whitespace-nowrap shrink-0 border border-blue-700 bg-blue-700 px-3.5 py-1.5 text-xs font-semibold text-white hover:bg-blue-800 disabled:opacity-50"
+          >
+            <Download className="h-3.5 w-3.5" />
+            {exportingPpt ? 'Generando .pptx...' : 'Exportar PPT (.pptx)'}
           </button>
         </div>
       </div>
@@ -204,7 +221,7 @@ export function PresentacionView({ activeMemberId, onSelectMember }: Presentacio
 
               {/* Pie fijo de la diapositiva */}
               <div className="flex flex-wrap items-center justify-between gap-2 border-t border-slate-200 pt-2.5 text-[11px] text-slate-500">
-                <span>ALMA · Exoesqueleto Mecatrónico UPN (Grupo G01) · Revisión Sistemática PRISMA 2020</span>
+                <span>ALMA · Exoesqueleto Mecatrónico UPN (Grupo G02) · Revisión Sistemática PRISMA 2020</span>
                 <span className="font-mono">{deck.memberCode} · Examen por Competencias T3</span>
               </div>
             </div>

@@ -64,7 +64,7 @@ export const DELIVERABLE_CATEGORIES: DeliverableCategoryMeta[] = [
     range: 'E19 – E21',
     title: 'Pitch Individual y Coevaluación Grupal',
     description:
-      'Referencias nominales del pitch individual de 3 minutos, diapositivas descargables en PDF por integrante y matriz de coevaluación G01.',
+      'Referencias nominales del pitch individual de 3 minutos, diapositivas descargables en PDF por integrante y matriz de coevaluación G02.',
   },
 ];
 
@@ -413,7 +413,7 @@ export const E15_BITACORA_PROMPTS = {
   pdfFilename: 'E15_Bitacora_Prompts_IA.pdf',
   docxFilename: 'E15_Bitacora_Prompts_IA.docx',
   summaryNote:
-    'De acuerdo con la Declaración Jurada del Grupo G01, el uso de IA generativa en este proyecto se restringió estrictamente a (1) estructurar ecuaciones booleanas y ubicar referencias bibliográficas con DOI y (2) revisión ortográfica, gramatical y de estilo APA 7.',
+    'De acuerdo con la Declaración Jurada del Grupo G02, el uso de IA generativa en este proyecto se restringió estrictamente a (1) estructurar ecuaciones booleanas y ubicar referencias bibliográficas con DOI y (2) revisión ortográfica, gramatical y de estilo APA 7.',
   aiTable: AI_DECLARATION_TABLE,
   prompts: [
     {
@@ -487,7 +487,7 @@ export const E18_CONSENTIMIENTOS_TEMPLATE = {
     contexto:
       'Autorización expresa para el uso estrictamente académico de las fotografías registradas durante las pruebas iniciales del prototipo de exoesqueleto de brazo en las que participa Maricielo como modelo/integrante de equipo de ciclo anterior.',
     clausula:
-      'Yo, Maricielo ________________________________, identificada con DNI N.° ________________, autorizo de manera libre, gratuita e informada a los integrantes del Grupo G01 (Gabriel Cadenillas, Arthuro Herrada, José Casariego y Hanns Maza) de la Carrera de Ingeniería Mecatrónica de la Universidad Privada del Norte (UPN) a utilizar con fines exclusivamente académicos las fotografías en las que porto el prototipo del exoesqueleto de miembro superior del proyecto ALMA, para su inclusión en el informe T3, carpeta de evidencias (E03/E18) y material expositivo del curso Emprendimiento y Evaluación de Proyectos (2026-1), quedando prohibido su uso comercial o difusión ajena al ámbito universitario sin consentimiento adicional.',
+      'Yo, Maricielo ________________________________, identificada con DNI N.° ________________, autorizo de manera libre, gratuita e informada a los integrantes del Grupo G02 (Gabriel Cadenillas, Arthuro Herrada, José Casariego y Hanns Maza) de la Carrera de Ingeniería Mecatrónica de la Universidad Privada del Norte (UPN) a utilizar con fines exclusivamente académicos las fotografías en las que porto el prototipo del exoesqueleto de miembro superior del proyecto ALMA, para su inclusión en el informe T3, carpeta de evidencias (E03/E18) y material expositivo del curso Emprendimiento y Evaluación de Proyectos (2026-1), quedando prohibido su uso comercial o difusión ajena al ámbito universitario sin consentimiento adicional.',
   },
   consentimientoEntrevistasDT: {
     titulo: 'Formato B: Consentimiento Informado para Entrevistas de Design Thinking (E01 / E18)',
@@ -502,12 +502,12 @@ export const E18_CONSENTIMIENTOS_TEMPLATE = {
 // ============================================================================
 export function getMemberPitchBaseTag(member: TeamMember): string {
   const parts = member.fileTag.split('_');
-  // E.g. G01_HerradaArthuro_RevisionSistematica.docx -> HerradaArthuro
+  // E.g. G02_HerradaArthuro_RevisionSistematica.docx -> HerradaArthuro
   return parts[1] ?? member.shortName.replace(/\s+/g, '');
 }
 
 export const E21_COEVALUACION_WORKBOOK = {
-  filename: 'E21_Matriz_Coevaluacion_G03.xlsx',
+  filename: 'E21_Matriz_Coevaluacion_G02.xlsx',
   criterios: [
     '1. Cumplimiento responsable de plazos e hitos S1–S6 (20 %)',
     '2. Calidad técnica de redacción y evidencias Drive E00–E21 (25 %)',

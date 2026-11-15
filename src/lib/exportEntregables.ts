@@ -825,7 +825,7 @@ export function generateBusinessModelCanvasPng(): string {
   ctx.fillStyle = '#cbd5e1';
   ctx.font = '14.5px "Plus Jakarta Sans", Arial, sans-serif';
   ctx.fillText(
-    'Modelo híbrido B2B2C · Grupo G01 (UPN Mecatrónica) · BOM unitario S/ 420 · Inversión S/ 24 000 · VAN S/ 9 589,89 · TIR 25,16 %',
+    'Modelo híbrido B2B2C · Grupo G02 (UPN Mecatrónica) · BOM unitario S/ 420 · Inversión S/ 24 000 · VAN S/ 9 589,89 · TIR 25,16 %',
     44,
     66,
   );
@@ -948,7 +948,7 @@ export function generateCadenaValorPng(): string {
   const supportActivities = [
     {
       title: 'Infraestructura del Emprendimiento',
-      desc: 'Taller de manufactura aditiva UPN/Lima Norte, gestión regulatoria DIGEMID/INDECOPI, control financiero E12–E13 y gobierno G01.',
+      desc: 'Taller de manufactura aditiva UPN/Lima Norte, gestión regulatoria DIGEMID/INDECOPI, control financiero E12–E13 y gobierno G02.',
       fill: '#f8fafc',
     },
     {

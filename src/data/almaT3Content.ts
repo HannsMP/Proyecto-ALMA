@@ -273,7 +273,7 @@ export const ODS_ALIGNMENT = [
 export const AI_SWORN_DECLARATION = {
   title: 'Declaración Jurada de Uso Responsable de Inteligencia Artificial',
   swornText:
-    'Los cuatro coautores del Grupo G01 de la Carrera de Ingeniería Mecatrónica de la Universidad Privada del Norte (UPN) declaramos bajo juramento que el presente artículo de revisión sistemática y sus entregables técnicos asociados son obra intelectual propia. Los sistemas de Inteligencia Artificial generativa fueron empleados exclusivamente como herramientas de apoyo en dos ámbitos acotados: (1) búsqueda, estructuración de ecuaciones booleanas e identificación preliminar de literatura científica indexada en Scopus, Web of Science y ScienceDirect; y (2) corrección ortográfica, gramatical, de estilo académico y verificación de formato APA 7.ª edición. En ningún caso se empleó IA para fabricar datos experimentales, alterar métricas clínicas o sustituir la verificación manual de los 41 DOIs ni la autoría técnica del exoesqueleto ALMA.',
+    'Los cuatro coautores del Grupo G02 de la Carrera de Ingeniería Mecatrónica de la Universidad Privada del Norte (UPN) declaramos bajo juramento que el presente artículo de revisión sistemática y sus entregables técnicos asociados son obra intelectual propia. Los sistemas de Inteligencia Artificial generativa fueron empleados exclusivamente como herramientas de apoyo en dos ámbitos acotados: (1) búsqueda, estructuración de ecuaciones booleanas e identificación preliminar de literatura científica indexada en Scopus, Web of Science y ScienceDirect; y (2) corrección ortográfica, gramatical, de estilo académico y verificación de formato APA 7.ª edición. En ningún caso se empleó IA para fabricar datos experimentales, alterar métricas clínicas o sustituir la verificación manual de los 41 DOIs ni la autoría técnica del exoesqueleto ALMA.',
 };
 
 export const AI_DECLARATION_TABLE = [
@@ -325,6 +325,6 @@ export const EVIDENCE_MASTER_TABLE = [
   { code: 'E18', name: 'Consentimientos informados (entrevistas y uso fotográfico Maricielo)', section: '2.2, An. C', file: '04_Integridad_IA_Turnitin/E18_Consentimientos_Entrevistas.pdf', link: 'https://drive.google.com/file/d/ENLACE_E18_CONSENT/view' },
   { code: 'E19', name: 'Video Pitch individual de 3 minutos en cámara', section: 'Portada, An. D', file: '05_Pitch_Coevaluacion/E19_<ApellidoNombre>_Pitch_3min.mp4', link: 'https://drive.google.com/file/d/ENLACE_E19_PITCH/view' },
   { code: 'E20', name: 'Diapositivas de Pitch individual (PDF exportado)', section: 'An. D', file: '05_Pitch_Coevaluacion/E20_<ApellidoNombre>_Diapositivas_Pitch.pdf', link: 'https://drive.google.com/file/d/ENLACE_E20_SLIDES/view' },
-  { code: 'E21', name: 'Matriz de coevaluación grupal entre pares', section: 'An. E', file: '05_Pitch_Coevaluacion/E21_Matriz_Coevaluacion_G03.xlsx', link: 'https://drive.google.com/file/d/ENLACE_E21_COEVAL/view' },
+  { code: 'E21', name: 'Matriz de coevaluación grupal entre pares', section: 'An. E', file: '05_Pitch_Coevaluacion/E21_Matriz_Coevaluacion_G02.xlsx', link: 'https://drive.google.com/file/d/ENLACE_E21_COEVAL/view' },
 ];
 

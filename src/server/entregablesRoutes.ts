@@ -419,7 +419,7 @@ export function registerEntregablesRoutes(app: Express): void {
       }
 
       const manifestTxt = [
-        'E07_Articulos_Incluidos_PDF — Proyecto ALMA (Grupo G01, UPN)',
+        'E07_Articulos_Incluidos_PDF — Proyecto ALMA (Grupo G02, UPN)',
         `Total de artículos incluidos en paquete: ${addedCount} de ${PDF_MANIFEST.length}`,
         'Convención de nombrado: Autor_Año_PalabraClave.pdf',
         '========================================================================',

@@ -498,7 +498,7 @@ export async function generateAlmaT3WordDocx(activeMember: TeamMember): Promise<
             'El proyecto ALMA traduce esta evidencia en un producto viable con BOM unitario de S/ 420, latencia BLE inferior a 20 ms, precisión NLP de 91,70 % y un modelo de negocio híbrido rentable a cinco años (VAN = S/ 9 589,89; TIR = 25,16 %; B/C = 1,40; PRI = 3,69 años), resistente incluso ante reducciones de flujo del 20 %. Como limitación principal, el prototipo requiere un estudio piloto clínico con 20 pacientes para validar longitudinalmente la ganancia motora en escala FMA-UE y completar su registro sanitario.',
           ),
 
-          heading1('Declaración de Contribución CRediT (Grupo G01)'),
+          heading1('Declaración de Contribución CRediT (Grupo G02)'),
           createStyledTable(
             ['Integrante', 'Código', 'Roles CRediT y aporte principal'],
             TEAM_MEMBERS.map((m) => [
@@ -546,7 +546,7 @@ export async function generateAlmaT3WordDocx(activeMember: TeamMember): Promise<
 
           heading1('Anexo B. Reporte de Integridad Académica (Turnitin – E17)'),
           bodyPara(
-            'Umbrales exigidos por la rúbrica T3: Índice de Similitud ≤ 15 % e Índice de IA ≤ 10 %. El reporte oficial PDF emitido por el coordinador del grupo G01 se adjunta en la evidencia E17 de la carpeta compartida Drive (sin depósito duplicado en repositorio para los coautores).',
+            'Umbrales exigidos por la rúbrica T3: Índice de Similitud ≤ 15 % e Índice de IA ≤ 10 %. El reporte oficial PDF emitido por el coordinador del grupo G02 se adjunta en la evidencia E17 de la carpeta compartida Drive (sin depósito duplicado en repositorio para los coautores).',
           ),
 
           heading1('Anexo C. Matriz Maestra de Evidencias (E00–E21)'),
@@ -578,7 +578,7 @@ export async function generateAlmaT3WordDocx(activeMember: TeamMember): Promise<
           bodyPara(activeMember.reflexionMSD),
           bulletPara('Enlace al Pitch individual de 3 minutos (E19–E20): ', `${activeMember.drivePitchFile} → ${activeMember.drivePitchPlaceholder}`),
 
-          heading1('Anexo E. Coevaluación del Grupo G01 (E21)'),
+          heading1('Anexo E. Coevaluación del Grupo G02 (E21)'),
           bodyPara(
             'Cada integrante remite de manera confidencial al docente la hoja de coevaluación E21 evaluando responsabilidad, calidad de cribado, cumplimiento de plazos y aportes técnicos entre pares (factor de ajuste 1,00 / 0,90 / 0,80 según desempeño).',
           ),

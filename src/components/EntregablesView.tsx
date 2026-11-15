@@ -301,7 +301,7 @@ export function EntregablesView({ activeMember, onSelectMember }: EntregablesVie
       paragraphs: [E16_DECLARACION_IA_TEMPLATE.swornText],
     },
     {
-      heading: 'Constancia de Suscripción y Firmas de los Coautores (Grupo G01)',
+      heading: 'Constancia de Suscripción y Firmas de los Coautores (Grupo G02)',
       table: {
         headers: ['Apellidos y Nombres', 'Código UPN', 'Rol en Revisión', 'Firma / V°B°'],
         rows: E16_DECLARACION_IA_TEMPLATE.members.map((m) => [
@@ -454,7 +454,7 @@ export function EntregablesView({ activeMember, onSelectMember }: EntregablesVie
   const handleDownloadE21CoevaluacionExcel = () => {
     downloadExcelWorkbook(E21_COEVALUACION_WORKBOOK.filename, [
       {
-        name: 'Coevaluacion_G01',
+        name: 'Coevaluacion_G02',
         headers: ['Código', 'Integrante', 'Rol T3', 'Plazos (20%)', 'Evidencias (25%)', 'PRISMA (20%)', 'Trabajo Par (15%)', 'Pitch (20%)', 'Total (100%)', 'Factor', 'Observación'],
         rows: E21_COEVALUACION_WORKBOOK.rows.map((r) => [
           r.codigo,
@@ -1836,7 +1836,7 @@ export function EntregablesView({ activeMember, onSelectMember }: EntregablesVie
                     </button>
                     <button
                       type="button"
-                      onClick={() => void downloadTemplateDocx(E16_DECLARACION_IA_TEMPLATE.docxFilename, E16_DECLARACION_IA_TEMPLATE.title, 'Documento oficial de integridad académica — Grupo G01 (UPN)', buildE16Sections())}
+                      onClick={() => void downloadTemplateDocx(E16_DECLARACION_IA_TEMPLATE.docxFilename, E16_DECLARACION_IA_TEMPLATE.title, 'Documento oficial de integridad académica — Grupo G02 (UPN)', buildE16Sections())}
                       className="inline-flex items-center gap-1.5 whitespace-nowrap border border-slate-300 bg-white px-3 py-1.5 text-xs font-medium text-slate-700 hover:bg-slate-50"
                     >
                       <FileText className="h-3.5 w-3.5" />
@@ -1844,7 +1844,7 @@ export function EntregablesView({ activeMember, onSelectMember }: EntregablesVie
                     </button>
                     <button
                       type="button"
-                      onClick={() => downloadSimplePdf(E16_DECLARACION_IA_TEMPLATE.pdfFilename, E16_DECLARACION_IA_TEMPLATE.title, 'Documento oficial de integridad académica — Grupo G01 (UPN)', buildE16Sections())}
+                      onClick={() => downloadSimplePdf(E16_DECLARACION_IA_TEMPLATE.pdfFilename, E16_DECLARACION_IA_TEMPLATE.title, 'Documento oficial de integridad académica — Grupo G02 (UPN)', buildE16Sections())}
                       className="inline-flex items-center gap-1.5 whitespace-nowrap border border-slate-900 bg-slate-900 px-3 py-1.5 text-xs font-semibold text-white hover:bg-slate-800"
                     >
                       <Download className="h-3.5 w-3.5" />
@@ -2145,7 +2145,7 @@ export function EntregablesView({ activeMember, onSelectMember }: EntregablesVie
                       <span>Escala 1,00 / 0,90 / 0,80 · 4 coautores</span>
                     </div>
                     <h3 className="mt-1 font-display text-base font-bold text-slate-900">
-                      Matriz de Coevaluación del Equipo (Grupo G01)
+                      Matriz de Coevaluación del Equipo (Grupo G02)
                     </h3>
                   </div>
 
